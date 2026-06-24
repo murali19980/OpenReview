@@ -22,11 +22,19 @@ PORT = int(os.getenv("PORT", "8000"))
 # OpenRouter configuration
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 
-# Target models on OpenRouter (using free models router for automatic load balancing)
-PRIMARY_MODEL = os.getenv("PRIMARY_MODEL", "openrouter/free")
-SECURITY_MODEL = os.getenv("SECURITY_MODEL", "openrouter/free")
-LOGIC_MODEL = os.getenv("LOGIC_MODEL", "openrouter/free")
-DOCS_MODEL = os.getenv("DOCS_MODEL", "openrouter/free")
+# Helper to strictly enforce and select OpenRouter models containing ':free'
+def get_validated_free_model(env_var_name: str, fallback_default: str) -> str:
+    model_val = os.getenv(env_var_name, fallback_default)
+    if ":free" not in model_val:
+        print(f"[WARNING] Model config '{model_val}' for {env_var_name} does not contain ':free'. "
+              f"Enforcing and returning fallback: '{fallback_default}'")
+        return fallback_default
+    return model_val
+
+PRIMARY_MODEL = get_validated_free_model("PRIMARY_MODEL", "meta-llama/llama-3.3-70b-instruct:free")
+SECURITY_MODEL = get_validated_free_model("SECURITY_MODEL", "meta-llama/llama-3.3-70b-instruct:free")
+LOGIC_MODEL = get_validated_free_model("LOGIC_MODEL", "meta-llama/llama-3.3-70b-instruct:free")
+DOCS_MODEL = get_validated_free_model("DOCS_MODEL", "meta-llama/llama-3.2-3b-instruct:free")
 
 # Validation check to assist developer troubleshooting on start
 def validate_config():
