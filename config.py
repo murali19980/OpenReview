@@ -22,12 +22,11 @@ PORT = int(os.getenv("PORT", "8000"))
 # OpenRouter configuration
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 
-# Target models on OpenRouter (using free models as primary, fallback as needed)
-# Llama 3 8B Instruct (Free), Gemma 2 9B (Free), or Mistral 7B Instruct (Free)
-PRIMARY_MODEL = os.getenv("PRIMARY_MODEL", "meta-llama/llama-3-8b-instruct:free")
-SECURITY_MODEL = os.getenv("SECURITY_MODEL", "meta-llama/llama-3-8b-instruct:free")
-LOGIC_MODEL = os.getenv("LOGIC_MODEL", "google/gemma-2-9b-it:free")
-DOCS_MODEL = os.getenv("DOCS_MODEL", "meta-llama/llama-3-8b-instruct:free")
+# Target models on OpenRouter (using free models router for automatic load balancing)
+PRIMARY_MODEL = os.getenv("PRIMARY_MODEL", "openrouter/free")
+SECURITY_MODEL = os.getenv("SECURITY_MODEL", "openrouter/free")
+LOGIC_MODEL = os.getenv("LOGIC_MODEL", "openrouter/free")
+DOCS_MODEL = os.getenv("DOCS_MODEL", "openrouter/free")
 
 # Validation check to assist developer troubleshooting on start
 def validate_config():
